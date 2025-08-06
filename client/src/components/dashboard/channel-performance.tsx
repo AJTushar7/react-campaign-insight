@@ -1,108 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Target, Send, Users, MessageSquare } from "lucide-react";
+import { mockKPIData, mockChannelPerformance } from "@/data/mock-data";
 
 export default function ChannelPerformance() {
-  const kpis = [
-    {
-      title: "Total Revenue",
-      value: "₹50.5L",
-      change: "+18.5% vs last month",
-      changeType: "positive",
-      icon: TrendingUp,
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600"
-    },
-    {
-      title: "Campaign ROI",
-      value: "6.0x",
-      change: "+2.1x improvement",
-      changeType: "positive",
-      icon: Target,
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600"
-    },
-    {
-      title: "Messages Sent",
-      value: "4.8M",
-      change: "Across all channels",
-      changeType: "neutral",
-      icon: Send,
-      bgColor: "bg-purple-50",
-      iconColor: "text-purple-600"
-    },
-    {
-      title: "Avg Conversion Rate",
-      value: "10.7%",
-      change: "+3.2% from target",
-      changeType: "positive",
-      icon: Users,
-      bgColor: "bg-orange-50",
-      iconColor: "text-orange-600"
-    }
-  ];
+  const kpis = mockKPIData.map(kpi => ({
+    ...kpi,
+    icon: kpi.icon === "TrendingUp" ? TrendingUp :
+          kpi.icon === "Target" ? Target :
+          kpi.icon === "Send" ? Send : Users
+  }));
 
-  const channels = [
-    {
-      name: "WhatsApp",
-      icon: "fab fa-whatsapp",
-      bgColor: "bg-green-50",
-      borderColor: "border-green-200",
-      iconColor: "bg-green-500",
-      openRate: "98.5%",
-      ctr: "28.7%", 
-      costPerLead: "₹32",
-      efficiency: 95,
-      efficiencyColor: "text-green-600"
-    },
-    {
-      name: "SMS", 
-      icon: "fas fa-sms",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
-      iconColor: "bg-blue-500",
-      openRate: "97.0%",
-      ctr: "18.0%",
-      costPerLead: "₹28", 
-      efficiency: 88,
-      efficiencyColor: "text-blue-600"
-    },
-    {
-      name: "Email",
-      icon: "fas fa-envelope", 
-      bgColor: "bg-purple-50",
-      borderColor: "border-purple-200",
-      iconColor: "bg-purple-500",
-      openRate: "24.5%",
-      ctr: "8.0%",
-      costPerLead: "₹18",
-      efficiency: 72,
-      efficiencyColor: "text-purple-600"
-    },
-    {
-      name: "Push",
-      icon: "fas fa-bell",
-      bgColor: "bg-orange-50", 
-      borderColor: "border-orange-200",
-      iconColor: "bg-orange-500", 
-      openRate: "92.5%",
-      ctr: "3.0%",
-      costPerLead: "₹45",
-      efficiency: 68,
-      efficiencyColor: "text-orange-600"
-    },
-    {
-      name: "RCS",
-      icon: "fas fa-comment-dots",
-      bgColor: "bg-cyan-50",
-      borderColor: "border-cyan-200", 
-      iconColor: "bg-cyan-500",
-      openRate: "89.2%",
-      ctr: "15.5%",
-      costPerLead: "₹38",
-      efficiency: 75,
-      efficiencyColor: "text-cyan-600"
-    }
-  ];
+  const channels = mockChannelPerformance;
 
   return (
     <Card>

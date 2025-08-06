@@ -17,6 +17,7 @@ import {
   Calendar
 } from "lucide-react";
 import { useState } from "react";
+import { mockCampaigns, mockAIInsights } from "@/data/mock-data";
 
 export default function RealTimeMonitoring() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -24,149 +25,20 @@ export default function RealTimeMonitoring() {
   const [dateRange, setDateRange] = useState("15days");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  const campaigns = [
-    {
-      name: "Diwali Festival Sale",
-      status: "Active",
-      statusType: "warning",
-      burnRate: 88,
-      sent: "16L",
-      total: "200K",
-      percentage: 78,
-      spent: 8600,
-      budget: 10000,
-      icon: AlertTriangle,
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-200",
-      segment: "Premium Customers",
-      channel: "WhatsApp",
-      startDate: "2024-10-15",
-      errors: 12,
-      retryCount: 3,
-      retryCost: 840
-    },
-    {
-      name: "New Model Launch", 
-      status: "Active",
-      statusType: "info",
-      burnRate: 62,
-      sent: "93.3K",
-      total: "200K", 
-      percentage: 46,
-      spent: 6200,
-      budget: 12000,
-      icon: Clock,
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
-      segment: "Existing Customers",
-      channel: "Email",
-      startDate: "2024-10-20",
-      errors: 5,
-      retryCount: 1,
-      retryCost: 280
-    },
-    {
-      name: "Service Reminder",
-      status: "Completed",
-      statusType: "success", 
-      burnRate: 100,
-      sent: "75K",
-      total: "75K",
-      percentage: 100,
-      spent: 3750,
-      budget: 3750,
-      icon: CheckCircle,
-      bgColor: "bg-green-50",
-      borderColor: "border-green-200",
-      segment: "All Customers",
-      channel: "SMS",
-      startDate: "2024-10-10",
-      errors: 0,
-      retryCount: 0,
-      retryCost: 0
-    },
-    {
-      name: "Insurance Renewal",
-      status: "Scheduled", 
-      statusType: "default",
-      burnRate: 0,
-      sent: "0",
-      total: "120K",
-      percentage: 0,
-      spent: 0,
-      budget: 6000,
-      icon: Clock,
-      bgColor: "bg-gray-50",
-      borderColor: "border-gray-200",
-      segment: "Policy Holders",
-      channel: "Push",
-      startDate: "2024-11-01",
-      errors: 0,
-      retryCount: 0,
-      retryCost: 0
-    },
-    {
-      name: "Black Friday Sale",
-      status: "Active",
-      statusType: "info",
-      burnRate: 45,
-      sent: "42K",
-      total: "150K",
-      percentage: 28,
-      spent: 4200,
-      budget: 9500,
-      icon: Clock,
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
-      segment: "VIP Customers",
-      channel: "RCS",
-      startDate: "2024-10-25",
-      errors: 8,
-      retryCount: 2,
-      retryCost: 560
-    },
-    {
-      name: "Winter Collection Launch",
-      status: "Active",
-      statusType: "warning",
-      burnRate: 92,
-      sent: "85K",
-      total: "100K",
-      percentage: 85,
-      spent: 7800,
-      budget: 8500,
-      icon: AlertTriangle,
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-200",
-      segment: "Fashion Enthusiasts",
-      channel: "WhatsApp",
-      startDate: "2024-10-18",
-      errors: 15,
-      retryCount: 4,
-      retryCost: 1200
-    }
-  ];
+  // Convert mock data to component format
+  const campaigns = mockCampaigns.map(campaign => ({
+    ...campaign,
+    icon: campaign.statusType === 'warning' ? AlertTriangle : 
+          campaign.statusType === 'success' ? CheckCircle : Clock,
+    bgColor: campaign.statusType === 'warning' ? "bg-orange-50" :
+             campaign.statusType === 'success' ? "bg-green-50" :
+             campaign.statusType === 'info' ? "bg-blue-50" : "bg-gray-50",
+    borderColor: campaign.statusType === 'warning' ? "border-orange-200" :
+                 campaign.statusType === 'success' ? "border-green-200" :
+                 campaign.statusType === 'info' ? "border-blue-200" : "border-gray-200"
+  }));
 
-  const aiInsights = [
-    {
-      type: "optimization",
-      message: "Diwali Festival Sale: Consider increasing budget by 15% - current conversion rate 28% above average",
-      impact: "Potential +₹12K revenue",
-      confidence: 92
-    },
-    {
-      type: "alert",
-      message: "Winter Collection: High burn rate detected. Recommend pausing and optimizing targeting",
-      impact: "Save ₹1.2K budget",
-      confidence: 87
-    },
-    {
-      type: "retry",
-      message: "12 failed deliveries in Diwali campaign. Retry with fallback channel?",
-      impact: "Recover 12 customers, Cost: ₹840",
-      confidence: 95
-    }
-  ];
+  const aiInsights = mockAIInsights;
 
   const filteredCampaigns = campaigns.filter(campaign => {
     if (statusFilter === "all") return true;

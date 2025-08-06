@@ -6,17 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Calculator, TrendingUp, Target, DollarSign, Users, Upload } from "lucide-react";
 import { useState } from "react";
+import { mockBudgetData } from "@/data/mock-data";
 
 export default function BudgetCalculator() {
   const [uploadMode, setUploadMode] = useState(false);
 
-  const budgetData = [
-    { channel: 'WhatsApp', budget: 25000, spent: 22400, remaining: 2600, efficiency: 89.6 },
-    { channel: 'SMS', budget: 15000, spent: 12800, remaining: 2200, efficiency: 85.3 },
-    { channel: 'Email', budget: 8000, spent: 6400, remaining: 1600, efficiency: 80.0 },
-    { channel: 'Push', budget: 5000, spent: 4200, remaining: 800, efficiency: 84.0 },
-    { channel: 'RCS', budget: 7000, spent: 5600, remaining: 1400, efficiency: 80.0 }
-  ];
+  const budgetData = mockBudgetData;
 
   const pieData = budgetData.map(item => ({
     name: item.channel,

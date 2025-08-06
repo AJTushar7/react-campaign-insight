@@ -3,99 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, TrendingUp, Target, Users, Clock, Plus, Calendar, Lightbulb } from "lucide-react";
 import { useState, useEffect } from "react";
+import { generateMockHolidays, mockCampaignInsights } from "@/data/mock-data";
 
 export default function FestivalTimeline() {
   const [holidays, setHolidays] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Auto-detect holidays using date calculations
+  // Auto-detect holidays using mock data
   useEffect(() => {
     const detectHolidays = () => {
-      const currentYear = new Date().getFullYear();
-      const detectedHolidays = [
-        {
-          name: "Diwali",
-          date: new Date(currentYear, 10, 12), // November 12 (estimated)
-          status: "upcoming",
-          campaigns: 3,
-          expectedRevenue: "₹12L",
-          engagement: "+67%",
-          color: "border-orange-300 bg-orange-50",
-          category: "Festival",
-          description: "Festival of Lights - Major Indian celebration",
-          preparationDays: 7,
-          conversionRate: "28%"
-        },
-        {
-          name: "Christmas",
-          date: new Date(currentYear, 11, 25), // December 25
-          status: "planned",
-          campaigns: 5,
-          expectedRevenue: "₹25L",
-          engagement: "+89%",
-          color: "border-green-300 bg-green-50",
-          category: "Religious",
-          description: "Christmas Day - Global Christian holiday",
-          preparationDays: 14,
-          conversionRate: "35%"
-        },
-        {
-          name: "New Year",
-          date: new Date(currentYear + 1, 0, 1), // January 1 next year
-          status: "planned",
-          campaigns: 2,
-          expectedRevenue: "₹8L",
-          engagement: "+45%",
-          color: "border-blue-300 bg-blue-50",
-          category: "Celebration",
-          description: "New Year's Day - Global celebration",
-          preparationDays: 10,
-          conversionRate: "22%"
-        },
-        {
-          name: "Black Friday",
-          date: new Date(currentYear, 10, 29), // November 29 (4th Friday of November)
-          status: "active",
-          campaigns: 8,
-          expectedRevenue: "₹45L",
-          engagement: "+156%",
-          color: "border-purple-300 bg-purple-50",
-          category: "Shopping",
-          description: "Black Friday Sale - Major shopping event",
-          preparationDays: 3,
-          conversionRate: "42%"
-        },
-        {
-          name: "Valentine's Day",
-          date: new Date(currentYear + 1, 1, 14), // February 14 next year
-          status: "planned",
-          campaigns: 4,
-          expectedRevenue: "₹15L",
-          engagement: "+78%",
-          color: "border-pink-300 bg-pink-50",
-          category: "Romance",
-          description: "Valentine's Day - Romance and gifts",
-          preparationDays: 10,
-          conversionRate: "31%"
-        },
-        {
-          name: "Holi",
-          date: new Date(currentYear + 1, 2, 13), // March 13 next year (estimated)
-          status: "planned",
-          campaigns: 3,
-          expectedRevenue: "₹9L",
-          engagement: "+56%",
-          color: "border-yellow-300 bg-yellow-50",
-          category: "Festival",
-          description: "Festival of Colors - Indian spring festival",
-          preparationDays: 7,
-          conversionRate: "25%"
-        }
-      ];
-
-      // Sort by date
-      detectedHolidays.sort((a, b) => a.date.getTime() - b.date.getTime());
-      
+      const detectedHolidays = generateMockHolidays();
       setHolidays(detectedHolidays);
       setLoading(false);
     };
@@ -125,23 +42,7 @@ export default function FestivalTimeline() {
     return { text: "Planned", class: "bg-blue-100 text-blue-800" };
   };
 
-  const campaignInsights = [
-    {
-      insight: "Black Friday campaigns show 3x higher conversion rates",
-      action: "Increase budget allocation by 40%",
-      impact: "+₹18L potential revenue"
-    },
-    {
-      insight: "Christmas campaigns perform best with 14-day lead time",
-      action: "Start campaigns December 11th",
-      impact: "35% better engagement"
-    },
-    {
-      insight: "Festival campaigns need regional customization",
-      action: "Create region-specific content",
-      impact: "67% higher local engagement"
-    }
-  ];
+  const campaignInsights = mockCampaignInsights;
 
   return (
     <Card>

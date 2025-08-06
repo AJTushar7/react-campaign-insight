@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Lightbulb, TrendingUp, CalendarX } from "lucide-react";
+import { mockHeatmapData } from "@/data/mock-data";
 
 export default function EngagementHeatmap() {
   const channelPerformance = [
@@ -23,15 +24,7 @@ export default function EngagementHeatmap() {
     }
   ];
 
-  const heatmapData = [
-    { day: "Sun", values: [12, 28, 45, 38], percentages: ["12%", "28%", "45%", "38%"] },
-    { day: "Mon", values: [25, 42, 68, 72], percentages: ["25%", "42%", "68%", "72%"] },
-    { day: "Tue", values: [38, 78, 65, 42], percentages: ["38%", "78%", "65%", "42%"] },
-    { day: "Wed", values: [22, 58, 85, 68], percentages: ["22%", "58%", "85%", "68%"] },
-    { day: "Thu", values: [15, 45, 62, 48], percentages: ["15%", "45%", "62%", "48%"] },
-    { day: "Fri", values: [28, 52, 75, 82], percentages: ["28%", "52%", "75%", "82%"] },
-    { day: "Sat", values: [18, 32, 48, 35], percentages: ["18%", "32%", "48%", "35%"] }
-  ];
+  const heatmapData = mockHeatmapData;
 
   const getHeatmapColor = (value: number) => {
     if (value >= 80) return "bg-orange-500";

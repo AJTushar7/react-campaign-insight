@@ -11,42 +11,29 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-The frontend is built using React with TypeScript and follows a modern component-based architecture:
+The application is now a **pure client-side React application** with TypeScript and follows a modern component-based architecture:
 
 - **UI Framework**: React 18 with TypeScript for type safety and better developer experience
 - **Styling**: Tailwind CSS with shadcn/ui component library for consistent, accessible UI components
-- **State Management**: TanStack Query (React Query) for server state management and caching
+- **State Management**: TanStack Query (React Query) for client-side state management (server queries removed)
 - **Routing**: Wouter for lightweight client-side routing
 - **Build Tool**: Vite for fast development and optimized production builds
+- **Data Source**: Mock data system in `client/src/data/mock-data.ts` for all dashboard content
 
 The frontend follows a modular component structure with:
 - Shared UI components in `/components/ui/`
 - Dashboard-specific components in `/components/dashboard/`
 - Page components in `/pages/`
 - Custom hooks in `/hooks/`
-
-### Backend Architecture
-The backend uses a Node.js Express server with TypeScript:
-
-- **Framework**: Express.js for HTTP server and API routes
-- **Runtime**: Node.js with ESM modules
-- **Development**: tsx for TypeScript execution in development
-- **Production**: esbuild for bundling and optimization
-
-The server architecture includes:
-- Route registration system in `server/routes.ts`
-- Storage abstraction layer with in-memory implementation
-- Error handling middleware
-- Request logging and performance monitoring
+- Mock data system in `/data/mock-data.ts`
 
 ### Data Storage Solutions
-The application is configured for PostgreSQL with Drizzle ORM:
+The application now uses **client-side mock data only**:
 
-- **Database**: PostgreSQL (configured via DATABASE_URL environment variable)
-- **ORM**: Drizzle ORM for type-safe database operations
-- **Schema**: Centralized schema definition in `shared/schema.ts`
-- **Migrations**: Drizzle Kit for database migrations
-- **Development**: In-memory storage implementation for rapid prototyping
+- **Data Source**: Comprehensive mock data in `client/src/data/mock-data.ts`
+- **No Backend**: Server folder completely removed for pure client-side operation
+- **No Database**: All data is generated client-side for demonstration purposes
+- **Campaign Analytics**: Real-time mock data for all dashboard sections including performance metrics, engagement heatmaps, budget calculations, and BSP comparisons
 
 ### Authentication and Authorization
 Basic user management structure is in place:
