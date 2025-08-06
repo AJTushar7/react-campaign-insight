@@ -24,24 +24,25 @@ export default function EngagementHeatmap() {
   ];
 
   const heatmapData = [
-    { day: "Sun", values: [1, 2, 3, 4] },
-    { day: "Mon", values: [2, 3, 4, 5] },
-    { day: "Tue", values: [3, 5, 4, 3] },
-    { day: "Wed", values: [2, 4, 5, 4] },
-    { day: "Thu", values: [1, 3, 4, 3] },
-    { day: "Fri", values: [2, 3, 4, 5] },
-    { day: "Sat", values: [1, 2, 3, 2] }
+    { day: "Sun", values: [12, 28, 45, 38], percentages: ["12%", "28%", "45%", "38%"] },
+    { day: "Mon", values: [25, 42, 68, 72], percentages: ["25%", "42%", "68%", "72%"] },
+    { day: "Tue", values: [38, 78, 65, 42], percentages: ["38%", "78%", "65%", "42%"] },
+    { day: "Wed", values: [22, 58, 85, 68], percentages: ["22%", "58%", "85%", "68%"] },
+    { day: "Thu", values: [15, 45, 62, 48], percentages: ["15%", "45%", "62%", "48%"] },
+    { day: "Fri", values: [28, 52, 75, 82], percentages: ["28%", "52%", "75%", "82%"] },
+    { day: "Sat", values: [18, 32, 48, 35], percentages: ["18%", "32%", "48%", "35%"] }
   ];
 
   const getHeatmapColor = (value: number) => {
-    switch(value) {
-      case 1: return "bg-orange-100";
-      case 2: return "bg-orange-200";
-      case 3: return "bg-orange-300";
-      case 4: return "bg-orange-400";
-      case 5: return "bg-orange-500";
-      default: return "bg-gray-100";
-    }
+    if (value >= 80) return "bg-orange-500";
+    if (value >= 60) return "bg-orange-400";
+    if (value >= 40) return "bg-orange-300";
+    if (value >= 20) return "bg-orange-200";
+    return "bg-orange-100";
+  };
+
+  const getTextColor = (value: number) => {
+    return value >= 60 ? "text-white" : "text-gray-800";
   };
 
   return (
@@ -94,9 +95,13 @@ export default function EngagementHeatmap() {
                         {row.values.map((value, cellIndex) => (
                           <td key={cellIndex} className="text-center py-2 px-2">
                             <div 
-                              className={`w-8 h-6 ${getHeatmapColor(value)} rounded mx-auto`}
+                              className={`w-8 h-6 ${getHeatmapColor(value)} rounded mx-auto flex items-center justify-center`}
                               data-testid={`heatmap-cell-${index}-${cellIndex}`}
-                            ></div>
+                            >
+                              <span className={`text-xs font-medium ${getTextColor(value)}`}>
+                                {row.percentages[cellIndex]}
+                              </span>
+                            </div>
                           </td>
                         ))}
                       </tr>

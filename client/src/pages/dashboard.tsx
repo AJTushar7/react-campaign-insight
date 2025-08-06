@@ -3,16 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Zap } from "lucide-react";
-import KPICards from "@/components/dashboard/kpi-cards";
-import RealTimeMonitoring from "@/components/dashboard/real-time-monitoring";
-import EngagementHeatmap from "@/components/dashboard/engagement-heatmap";
-import InactiveCustomers from "@/components/dashboard/inactive-customers";
 import CampaignPerformanceTable from "@/components/dashboard/campaign-performance-table";
-import BudgetPerformance from "@/components/dashboard/budget-performance";
-import FestivalTimeline from "@/components/dashboard/festival-timeline";
-import ChannelComparison from "@/components/dashboard/channel-comparison";
+import ChannelPerformance from "@/components/dashboard/channel-performance";
+import EngagementHeatmap from "@/components/dashboard/engagement-heatmap";
+import RealTimeMonitoring from "@/components/dashboard/real-time-monitoring";
 import CostOptimization from "@/components/dashboard/cost-optimization";
+import OrchestrationAnalysis from "@/components/dashboard/orchestration-analysis";
 import BSPPerformance from "@/components/dashboard/bsp-performance";
+import FestivalTimeline from "@/components/dashboard/festival-timeline";
+import BudgetCalculator from "@/components/dashboard/budget-calculator";
 
 export default function Dashboard() {
   const [selectedChannel, setSelectedChannel] = useState("all");
@@ -58,40 +57,32 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="p-6 space-y-6">
-        {/* KPI Cards */}
-        <KPICards />
+        {/* Total Campaign and Details with New Campaign Option */}
+        <CampaignPerformanceTable />
+
+        {/* Channel Performance and Heatmap Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChannelPerformance />
+          <EngagementHeatmap />
+        </div>
+
+        {/* Real-time Campaign Monitoring with AI Analytics */}
+        <RealTimeMonitoring />
 
         {/* Cost Optimization Insights */}
         <CostOptimization />
 
-        {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column: Real-time Monitoring & Heatmap */}
-          <div className="lg:col-span-2 space-y-6">
-            <RealTimeMonitoring />
-            <EngagementHeatmap />
-          </div>
-
-          {/* Right Column: Inactive Customer Management */}
-          <div className="space-y-6">
-            <InactiveCustomers />
-          </div>
-        </div>
-
-        {/* Festival Performance Timeline */}
-        <FestivalTimeline />
+        {/* Orchestration Analysis */}
+        <OrchestrationAnalysis />
 
         {/* BSP Performance Comparison */}
         <BSPPerformance />
 
-        {/* Campaign Performance Details Table */}
-        <CampaignPerformanceTable />
+        {/* Festival Performance Timeline */}
+        <FestivalTimeline />
 
-        {/* Additional Analytics Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <BudgetPerformance />
-          <ChannelComparison />
-        </div>
+        {/* Budget vs Performance Calculator */}
+        <BudgetCalculator />
       </main>
     </div>
   );
