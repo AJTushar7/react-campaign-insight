@@ -11,21 +11,21 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-The application is now a **pure client-side React application** with TypeScript and follows a modern component-based architecture:
+The application has been **migrated to Angular 15** with TypeScript and follows a modern component-based architecture:
 
-- **UI Framework**: React 18 with TypeScript for type safety and better developer experience
-- **Styling**: Tailwind CSS with shadcn/ui component library for consistent, accessible UI components
-- **State Management**: TanStack Query (React Query) for client-side state management (server queries removed)
-- **Routing**: Wouter for lightweight client-side routing
-- **Build Tool**: Vite for fast development and optimized production builds
-- **Data Source**: Mock data system in `client/src/data/mock-data.ts` for all dashboard content
+- **UI Framework**: Angular 15.2 with TypeScript for robust enterprise-grade development
+- **Styling**: SCSS with responsive design system for consistent UI components
+- **State Management**: Angular services with RxJS observables for reactive data flow
+- **Routing**: Angular Router for client-side navigation and route management
+- **Build Tool**: Angular CLI for development and optimized production builds
+- **Data Source**: Angular services with comprehensive mock data for all dashboard functionality
 
-The frontend follows a modular component structure with:
-- Shared UI components in `/components/ui/`
-- Dashboard-specific components in `/components/dashboard/`
-- Page components in `/pages/`
-- Custom hooks in `/hooks/`
-- Mock data system in `/data/mock-data.ts`
+The frontend follows Angular's modular component structure with:
+- Angular components in `/src/app/components/`
+- Dashboard-specific components including real-time monitoring, engagement heatmaps, BSP performance
+- Service layer in `/src/app/services/` for data management
+- TypeScript models in `/src/app/models/` for type safety
+- Comprehensive mock data system integrated into services
 
 ### Data Storage Solutions
 The application now uses **client-side mock data only**:

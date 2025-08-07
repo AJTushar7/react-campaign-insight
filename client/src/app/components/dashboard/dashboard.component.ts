@@ -1,195 +1,281 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Campaign, KPI, ChannelPerformance, BSPComparison } from '../../models/campaign.model';
-import { CampaignService } from '../../services/campaign.service';
 
 @Component({
   selector: 'app-dashboard',
   template: `
-    <div class="container dashboard">
-      <div class="dashboard-header">
-        <h2>Campaign Analytics Dashboard</h2>
-        <p>Real-time multi-channel campaign monitoring and performance insights</p>
-      </div>
-
-      <!-- KPI Cards Section -->
-      <section class="dashboard-section">
-        <app-kpi-cards [kpis]="kpis$ | async"></app-kpi-cards>
-      </section>
-
-      <!-- Channel Performance Section -->
-      <section class="dashboard-section">
-        <h3>Channel Performance Overview</h3>
-        <app-channel-performance [channelData]="channelPerformance$ | async"></app-channel-performance>
-      </section>
-
-      <!-- Campaign Table Section -->
-      <section class="dashboard-section">
-        <h3>Active Campaigns</h3>
-        <app-campaign-table [campaigns]="campaigns$ | async"></app-campaign-table>
-      </section>
-
-      <!-- BSP Performance Section -->
-      <section class="dashboard-section">
-        <h3>BSP Provider Comparison</h3>
-        <div class="bsp-grid" *ngIf="bspComparison$ | async as bspData">
-          <div class="card bsp-card" *ngFor="let bsp of bspData">
-            <div class="bsp-header">
-              <h4>{{bsp.provider}}</h4>
-              <span class="channel-badge" [style.background]="getChannelColor(bsp.channel)">{{bsp.channel | uppercase}}</span>
-            </div>
-            <div class="bsp-metrics">
-              <div class="metric">
-                <span class="metric-label">Cost per message</span>
-                <span class="metric-value">₹{{bsp.cost}}</span>
-              </div>
-              <div class="metric">
-                <span class="metric-label">Delivery Rate</span>
-                <span class="metric-value">{{bsp.deliveryRate}}%</span>
-              </div>
-              <div class="metric">
-                <span class="metric-label">Response Rate</span>
-                <span class="metric-value">{{bsp.responseRate}}%</span>
-              </div>
-              <div class="metric">
-                <span class="metric-label">Reliability</span>
-                <span class="metric-value">{{bsp.reliability}}%</span>
-              </div>
-            </div>
-            <div class="bsp-features">
-              <span class="feature-tag" *ngFor="let feature of bsp.features">{{feature}}</span>
+    <div class="min-h-screen bg-gray-50">
+      <!-- Header -->
+      <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-semibold text-gray-900">
+              Campaign Analytics Dashboard
+            </h1>
+            <p class="text-sm text-gray-600 mt-1">
+              Multi-Channel Campaign Performance • Real-time tracking across SMS, WhatsApp, Email, Push & RCS
+            </p>
+            <div class="flex items-center mt-2">
+              <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span class="text-xs text-green-600 ml-2">Live Updates Active</span>
             </div>
           </div>
+          <div class="flex items-center space-x-4">
+            <select [(ngModel)]="selectedChannel" class="w-40 px-3 py-2 border border-gray-300 rounded-md bg-white text-sm">
+              <option value="all">All Channels</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="sms">SMS</option>
+              <option value="email">Email</option>
+              <option value="push">Push</option>
+              <option value="rcs">RCS</option>
+            </select>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center">
+              <span class="mr-2">+</span>
+              New Campaign
+            </button>
+          </div>
         </div>
-      </section>
+      </header>
+
+      <!-- Main Content -->
+      <main class="p-6 space-y-6">
+        <!-- Campaign Performance Table -->
+        <app-campaign-table></app-campaign-table>
+
+        <!-- Channel Performance and Heatmap Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <app-channel-performance></app-channel-performance>
+          <app-engagement-heatmap></app-engagement-heatmap>
+        </div>
+
+        <!-- Real-time Campaign Monitoring with AI Analytics -->
+        <app-real-time-monitoring></app-real-time-monitoring>
+
+        <!-- Cost Optimization Insights -->
+        <app-cost-optimization></app-cost-optimization>
+
+        <!-- Orchestration Analysis -->
+        <app-orchestration-analysis></app-orchestration-analysis>
+
+        <!-- BSP Performance Comparison -->
+        <app-bsp-performance></app-bsp-performance>
+
+        <!-- Festival Performance Timeline -->
+        <app-festival-timeline></app-festival-timeline>
+
+        <!-- Budget vs Performance Calculator -->
+        <app-budget-calculator></app-budget-calculator>
+      </main>
     </div>
   `,
   styles: [`
-    .dashboard {
-      padding: 2rem 0;
+    .min-h-screen {
+      min-height: 100vh;
     }
     
-    .dashboard-header {
-      text-align: center;
-      margin-bottom: 3rem;
+    .bg-gray-50 {
+      background-color: #f9fafb;
     }
     
-    .dashboard-header h2 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      color: #2d3748;
+    .bg-white {
+      background-color: white;
     }
     
-    .dashboard-header p {
-      font-size: 1.2rem;
-      color: #718096;
+    .shadow-sm {
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
     
-    .dashboard-section {
-      margin-bottom: 3rem;
+    .border-b {
+      border-bottom-width: 1px;
     }
     
-    .dashboard-section h3 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-      color: #2d3748;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 0.5rem;
+    .border-gray-200 {
+      border-color: #e5e7eb;
     }
     
-    .bsp-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+    .px-6 {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
     }
     
-    .bsp-card {
+    .py-4 {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    
+    .p-6 {
       padding: 1.5rem;
     }
     
-    .bsp-header {
+    .flex {
       display: flex;
-      justify-content: space-between;
+    }
+    
+    .items-center {
       align-items: center;
-      margin-bottom: 1rem;
     }
     
-    .bsp-header h4 {
-      margin: 0;
-      font-size: 1.3rem;
-      color: #2d3748;
+    .justify-between {
+      justify-content: space-between;
     }
     
-    .channel-badge {
-      padding: 0.25rem 0.75rem;
-      border-radius: 12px;
+    .space-x-4 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 1rem;
+    }
+    
+    .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 1.5rem;
+    }
+    
+    .text-2xl {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+    
+    .text-sm {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    
+    .text-xs {
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+    
+    .font-semibold {
+      font-weight: 600;
+    }
+    
+    .font-medium {
+      font-weight: 500;
+    }
+    
+    .text-gray-900 {
+      color: #111827;
+    }
+    
+    .text-gray-600 {
+      color: #4b5563;
+    }
+    
+    .text-green-600 {
+      color: #16a34a;
+    }
+    
+    .text-white {
       color: white;
-      font-size: 0.8rem;
-      font-weight: 600;
     }
     
-    .bsp-metrics {
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+    
+    .ml-2 {
+      margin-left: 0.5rem;
+    }
+    
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+    
+    .w-2 {
+      width: 0.5rem;
+    }
+    
+    .h-2 {
+      height: 0.5rem;
+    }
+    
+    .w-40 {
+      width: 10rem;
+    }
+    
+    .bg-green-500 {
+      background-color: #22c55e;
+    }
+    
+    .bg-blue-600 {
+      background-color: #2563eb;
+    }
+    
+    .bg-blue-700 {
+      background-color: #1d4ed8;
+    }
+    
+    .rounded-full {
+      border-radius: 9999px;
+    }
+    
+    .rounded-md {
+      border-radius: 0.375rem;
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .5;
+      }
+    }
+    
+    .px-3 {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+    
+    .py-2 {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .border {
+      border-width: 1px;
+    }
+    
+    .border-gray-300 {
+      border-color: #d1d5db;
+    }
+    
+    .hover\\:bg-blue-700:hover {
+      background-color: #1d4ed8;
+    }
+    
+    .grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
     }
     
-    .metric {
-      display: flex;
-      flex-direction: column;
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
     }
     
-    .metric-label {
-      font-size: 0.9rem;
-      color: #718096;
-      margin-bottom: 0.25rem;
+    .gap-6 {
+      gap: 1.5rem;
     }
     
-    .metric-value {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #2d3748;
-    }
-    
-    .bsp-features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    
-    .feature-tag {
-      background-color: #edf2f7;
-      color: #4a5568;
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
+    @media (min-width: 1024px) {
+      .lg\\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
   `]
 })
 export class DashboardComponent implements OnInit {
-  campaigns$: Observable<Campaign[]>;
-  kpis$: Observable<KPI[]>;
-  channelPerformance$: Observable<ChannelPerformance[]>;
-  bspComparison$: Observable<BSPComparison[]>;
-
-  constructor(private campaignService: CampaignService) {}
+  selectedChannel: string = 'all';
 
   ngOnInit(): void {
-    this.campaigns$ = this.campaignService.getCampaigns();
-    this.kpis$ = this.campaignService.getKPIs();
-    this.channelPerformance$ = this.campaignService.getChannelPerformance();
-    this.bspComparison$ = this.campaignService.getBSPComparison();
-  }
-
-  getChannelColor(channel: string): string {
-    const colors: { [key: string]: string } = {
-      'sms': '#3b82f6',
-      'whatsapp': '#10b981',
-      'email': '#8b5cf6',
-      'push': '#f59e0b',
-      'rcs': '#ef4444'
-    };
-    return colors[channel] || '#6b7280';
+    console.log('Dashboard initialized with comprehensive Angular components');
   }
 }
